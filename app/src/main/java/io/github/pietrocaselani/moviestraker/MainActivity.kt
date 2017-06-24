@@ -3,6 +3,7 @@ package io.github.pietrocaselani.moviestraker
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.Toolbar
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -19,6 +20,11 @@ class MainActivity : AppCompatActivity(), HasSupportFragmentInjector {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
+
+		val toolbar = findViewById(R.id.app_toolbar) as Toolbar
+		setSupportActionBar(toolbar)
+
+		supportActionBar?.title = getString(R.string.app_name)
 
 		if (savedInstanceState == null) {
 			navigationController.navigateToUpcomingMovies()
