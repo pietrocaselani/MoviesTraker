@@ -5,6 +5,7 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.github.florent37.glidepalette.GlidePalette
 import io.github.pietrocaselani.moviestraker.R
+import io.github.pietrocaselani.moviestraker.extensions.setCompatAlpha
 import io.github.pietrocaselani.moviestraker.moviedetails.MovieDetailsViewModel
 
 /**
@@ -13,6 +14,8 @@ import io.github.pietrocaselani.moviestraker.moviedetails.MovieDetailsViewModel
 @BindingAdapter("moviePoster")
 fun bindMoviePoster(imageView: ImageView, viewModel: MovieDetailsViewModel) {
 	val posterLink = viewModel.posterLink.get()
+
+	imageView.setCompatAlpha(30)
 
 	val listener = GlidePalette.with(posterLink)
 			.intoCallBack { palette ->
