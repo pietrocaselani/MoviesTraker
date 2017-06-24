@@ -2,6 +2,7 @@ package io.github.pietrocaselani.moviestraker.upcoming
 
 import android.databinding.BaseObservable
 import android.databinding.ObservableField
+import android.graphics.Movie
 import io.github.pietrocaselani.moviestraker.entities.GenreEntity
 import io.github.pietrocaselani.moviestraker.entities.MovieEntity
 import io.github.pietrocaselani.moviestraker.tmdb.entities.GenreResponse
@@ -9,6 +10,7 @@ import io.github.pietrocaselani.moviestraker.tmdb.entities.ImageConfigurationRes
 import io.github.pietrocaselani.moviestraker.tmdb.entities.MovieResponse
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import okhttp3.HttpUrl
 import java.text.SimpleDateFormat
 
 /**
@@ -53,10 +55,47 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 	fun selectMovieAtIndex(index: Int) {
 		val movie = movieEntities[index]
 
-		if (movie == selectedMovie.get()) {
+		if (selectedMovie.get() != null && movie.id == selectedMovie.get().id) {
 			selectedMovie.notifyChange()
 		} else {
-			selectedMovie.set(movie)
+			val basePath = imageConfiguration?.let {
+				var sizePath = it.posterSizes.find {
+					it.contains("w3")
+				}
+
+				sizePath = sizePath ?: it.posterSizes.last()
+
+				it.secureBaseURL + sizePath
+			}
+
+			var biggerPosterLink: String? = null
+			var biggerBackdropLink: String? = null
+
+			if (movie.posterLink != null) {
+				val posterLink = HttpUrl.parse(movie.posterLink)?.pathSegments()?.last()
+				biggerPosterLink = HttpUrl.parse(basePath)?.newBuilder()
+						?.addPathSegment(posterLink)
+						?.build()
+						?.toString()
+			} else if (movie.backdropLink != null) {
+				val backdropLink = HttpUrl.parse(movie.backdropLink)?.pathSegments()?.last()
+				biggerBackdropLink = HttpUrl.parse(basePath)?.newBuilder()
+						?.addPathSegment(backdropLink)
+						?.build()
+						?.toString()
+			}
+
+			val movieToShow = MovieEntity(
+					id = movie.id,
+					title = movie.title,
+					overview = movie.overview,
+					releaseDate = movie.releaseDate,
+					genres = movie.genres,
+					posterLink = biggerPosterLink,
+					backdropLink = biggerBackdropLink
+			)
+
+			selectedMovie.set(movieToShow)
 		}
 	}
 	//endregion

@@ -29,7 +29,8 @@ fun bindMoviePoster(imageView: ImageView, viewModel: MovieDetailsViewModel) {
 				}
 			}
 
-	Glide.with(imageView).load(posterLink)
+	Glide.with(imageView)
+			.load(posterLink)
 			.listener(listener)
 			.into(imageView)
 }
