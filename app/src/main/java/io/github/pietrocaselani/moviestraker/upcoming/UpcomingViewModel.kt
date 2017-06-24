@@ -2,12 +2,13 @@ package io.github.pietrocaselani.moviestraker.upcoming
 
 import android.databinding.BaseObservable
 import android.databinding.ObservableField
+import io.github.pietrocaselani.moviestraker.entities.GenreEntity
+import io.github.pietrocaselani.moviestraker.entities.MovieEntity
 import io.github.pietrocaselani.moviestraker.tmdb.entities.GenreResponse
 import io.github.pietrocaselani.moviestraker.tmdb.entities.ImageConfigurationResponse
 import io.github.pietrocaselani.moviestraker.tmdb.entities.MovieResponse
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import okhttp3.HttpUrl
 import java.text.SimpleDateFormat
 
 /**
@@ -20,13 +21,14 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 	val message = ObservableField<String>("")
 	val moviesVisibility = ObservableField<Boolean>(true)
 	val messageVisibility = ObservableField<Boolean>(true)
+	val selectedMovie = ObservableField<MovieEntity>()
 	//endregion
 
 	//region Properties
 	private val disposables = CompositeDisposable()
 
 	private var imageConfiguration: ImageConfigurationResponse? = null
-	private val movieEntities = mutableListOf<MovieResponse>()
+	private val movieEntities = mutableListOf<MovieEntity>()
 	private var genres = listOf<GenreResponse>()
 	private var currentPage = 1
 	private var totalPages = Int.MAX_VALUE
@@ -47,6 +49,16 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 		currentPage++
 		loadMovies()
 	}
+
+	fun selectMovieAtIndex(index: Int) {
+		val movie = movieEntities[index]
+
+		if (movie == selectedMovie.get()) {
+			selectedMovie.notifyChange()
+		} else {
+			selectedMovie.set(movie)
+		}
+	}
 	//endregion
 
 	//region Private
@@ -64,10 +76,15 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 		interactor.fetchUpcomingMovies(currentPage)
 				.doOnNext {
 					totalPages = it.totalPages
-					movieEntities.addAll(it.movies)
 				}
 				.map {
-					mapToMovieListViewModel(it.movies)
+					mapToMovieEntity(it.movies)
+				}
+				.doOnNext {
+					movieEntities.addAll(it)
+				}
+				.map {
+					mapToMovieListViewModel(it)
 				}
 				.subscribe({
 					showMovies(it)
@@ -116,51 +133,59 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 		loadMovies()
 	}
 
-	private fun mapToMovieListViewModel(moviesResponse: List<MovieResponse>): List<MovieListViewModel> {
-		val dateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT)
-
-		return moviesResponse.map { movieResponse ->
+	private fun mapToMovieEntity(movies: List<MovieResponse>): List<MovieEntity> {
+		return movies.map { movie ->
 			val movieGenres = genres.filter {
-				movieResponse.genreIds.contains(it.id)
+				movie.genreIds.contains(it.id)
 			}.map {
-				it.name
+				GenreEntity(it.id, it.name)
 			}
 
-			var movieImageLink: String? = null
-
-			if (movieResponse.posterPath != null) {
-				movieImageLink = buildPosterURL(movieResponse.posterPath)
-			} else if (movieResponse.backdropPath != null) {
-				movieImageLink = buildBackdropURL(movieResponse.backdropPath)
+			val basePath = imageConfiguration?.let {
+				val sizePath = it.posterSizes.first()
+				it.secureBaseURL + sizePath
 			}
 
-			MovieListViewModel(
-					name = movieResponse.title,
-					imageLink = movieImageLink,
-					genres = movieGenres,
-					releaseDate = dateFormat.format(movieResponse.releaseDate)
+			val posterLink = basePath?.plus(movie.posterPath)
+			val backdropLink = basePath?.plus(movie.backdropPath)
+
+			MovieEntity(
+					id = movie.id,
+					title = movie.title,
+					overview = movie.overview,
+					posterLink = posterLink,
+					backdropLink = backdropLink,
+					releaseDate = movie.releaseDate,
+					genres = movieGenres
 			)
 		}
 	}
 
-	private fun buildPosterURL(posterPath: String): String? {
-		val sizePath = imageConfiguration?.posterSizes?.firstOrNull()
+	private fun mapToMovieListViewModel(moviesEntity: List<MovieEntity>): List<MovieListViewModel> {
+		val dateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT)
 
-		val path = imageConfiguration?.secureBaseURL?.plus(sizePath)?.plus(posterPath)
+		return moviesEntity.map { movieEntity ->
+			val movieGenres = movieEntity.genres.map {
+				it.name
+			}
 
-		val url = HttpUrl.parse(path)
+			val imageLink: String?
 
-		return url?.toString()
-	}
+			if (movieEntity.posterLink != null) {
+				imageLink = movieEntity.posterLink
+			} else if (movieEntity.backdropLink != null) {
+				imageLink = movieEntity.backdropLink
+			} else {
+				imageLink = null
+			}
 
-	private fun buildBackdropURL(backdropPath: String): String? {
-		val sizePath = imageConfiguration?.backdropSizes?.firstOrNull()
-
-		val path = imageConfiguration?.secureBaseURL?.plus(sizePath)?.plus(backdropPath)
-
-		val url = HttpUrl.parse(path)
-
-		return url?.toString()
+			MovieListViewModel(
+					name = movieEntity.title,
+					imageLink = imageLink,
+					genres = movieGenres,
+					releaseDate = dateFormat.format(movieEntity.releaseDate)
+			)
+		}
 	}
 	//endregion
 
@@ -172,10 +197,6 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 	}
 
 	private fun showMovies(moviesViewModel: List<MovieListViewModel>) {
-//		val currentMovies = mutableListOf<MovieListViewModel>()
-//		currentMovies.addAll(movies.get())
-//		currentMovies.addAll(moviesViewModel)
-
 		movies.set(moviesViewModel.toMutableList())
 
 		if (moviesVisibility.get() != true) {

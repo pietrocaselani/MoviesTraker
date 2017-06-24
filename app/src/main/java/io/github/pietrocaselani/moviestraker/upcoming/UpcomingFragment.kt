@@ -1,16 +1,18 @@
 package io.github.pietrocaselani.moviestraker.upcoming
 
 import android.databinding.DataBindingUtil
+import android.databinding.Observable
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.github.pietrocaselani.moviestraker.NavigationController
 import io.github.pietrocaselani.moviestraker.R
 import io.github.pietrocaselani.moviestraker.databinding.FragmentUpcomingBinding
 import io.github.pietrocaselani.moviestraker.di.Injectable
+import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 /**
@@ -23,9 +25,19 @@ class UpcomingFragment : Fragment(), Injectable {
 	}
 
 	@Inject lateinit var viewModel: UpcomingViewModel
-	private lateinit var binding: FragmentUpcomingBinding
+	@Inject lateinit var navigationController: NavigationController
 
+	private lateinit var binding: FragmentUpcomingBinding
 	private lateinit var endlessListener: EndlessRecyclerViewScrollListener
+
+	private val disposables = CompositeDisposable()
+
+	private val movieChangedCallback = object : Observable.OnPropertyChangedCallback() {
+		override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+			val movie = viewModel.selectedMovie.get()
+			navigationController.navigateToMovieDetails(movie)
+		}
+	}
 
 	override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 		binding = DataBindingUtil.inflate<FragmentUpcomingBinding>(
@@ -48,17 +60,23 @@ class UpcomingFragment : Fragment(), Injectable {
 	override fun onActivityCreated(savedInstanceState: Bundle?) {
 		super.onActivityCreated(savedInstanceState)
 
-		endlessListener.asObservable().subscribe {
+		viewModel.onStart()
+
+		viewModel.selectedMovie.addOnPropertyChangedCallback(movieChangedCallback)
+
+		val disposable = endlessListener.asObservable().subscribe {
 			viewModel.requestMoreMovies()
 		}
-
-		viewModel.onStart()
+		disposables.add(disposable)
 	}
 
 	override fun onStop() {
 		super.onStop()
 
+		viewModel.selectedMovie.removeOnPropertyChangedCallback(movieChangedCallback)
+
 		viewModel.onStop()
+		disposables.clear()
 	}
 
 	override fun onDestroy() {

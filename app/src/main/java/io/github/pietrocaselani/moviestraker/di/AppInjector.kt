@@ -11,6 +11,7 @@ import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
 import io.github.pietrocaselani.moviestraker.ActivityLifecycleCallbacksAdapter
 import io.github.pietrocaselani.moviestraker.MoviesTrackerApplication
+import io.github.pietrocaselani.moviestraker.moviedetails.MovieDetailsModule
 import io.github.pietrocaselani.moviestraker.upcoming.UpcomingModule
 
 /**
@@ -22,6 +23,7 @@ object AppInjector {
 		val moviesTrackerComponent = DaggerMoviesTrackerComponent.builder()
 				.appModule(AppModule(application))
 				.upcomingModule(UpcomingModule())
+				.movieDetailsModule(MovieDetailsModule())
 				.build()
 
 		moviesTrackerComponent.inject(application)
