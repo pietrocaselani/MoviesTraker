@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="io.github.pietrocaselani.moviestraker.MainActivity">
+
+    <data>
+        <variable
+            name="viewModel"
+            type="io.github.pietrocaselani.moviestraker.upcoming.UpcomingViewModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@{viewModel.message}"
+            app:booleanVisibility="@{viewModel.messageVisibility}"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview_movies"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:movies="@{viewModel.movies}"
+            app:booleanVisibility="@{viewModel.moviesVisibility}"/>
+
+    </FrameLayout>
+
+</layout>
