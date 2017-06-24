@@ -15,7 +15,11 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            buildConfigField "String", "TMDB_API_KEY", "\"${project.properties['TMDB_API_KEY_DEV']}\""
+        }
         release {
+            buildConfigField "String", "TMDB_API_KEY", "\"${project.properties['TMDB_API_KEY_RELEASE']}\""
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
