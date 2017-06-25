@@ -4,9 +4,9 @@ import dagger.Module
 import dagger.Provides
 import io.github.pietrocaselani.moviestraker.BuildConfig
 import io.github.pietrocaselani.moviestraker.MoviesTrackerApplication
-import io.github.pietrocaselani.moviestraker.moviedetails.MovieDetailsModule
+import io.github.pietrocaselani.moviestraker.ui.moviedetails.MovieDetailsModule
 import io.github.pietrocaselani.moviestraker.tmdb.TMDB
-import io.github.pietrocaselani.moviestraker.upcoming.UpcomingModule
+import io.github.pietrocaselani.moviestraker.ui.upcoming.UpcomingModule
 import javax.inject.Singleton
 
 /**

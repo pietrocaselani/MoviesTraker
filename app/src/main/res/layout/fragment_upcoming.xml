@@ -2,12 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context="io.github.pietrocaselani.moviestraker.MainActivity">
+        tools:context="io.github.pietrocaselani.moviestraker.ui.MainActivity">
 
     <data>
+
         <variable
             name="viewModel"
-            type="io.github.pietrocaselani.moviestraker.upcoming.UpcomingViewModel" />
+            type="io.github.pietrocaselani.moviestraker.ui.upcoming.UpcomingViewModel"/>
     </data>
 
     <FrameLayout
@@ -17,8 +18,8 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
             android:layout_gravity="center"
+            android:gravity="center_horizontal"
             android:text="@{viewModel.message}"
             app:booleanVisibility="@{viewModel.messageVisibility}"/>
 
@@ -27,9 +28,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbars="vertical"
+            app:booleanVisibility="@{viewModel.moviesVisibility}"
             app:movieSelected="@{viewModel}"
-            app:movies="@{viewModel.movies}"
-            app:booleanVisibility="@{viewModel.moviesVisibility}"/>
+            app:movies="@{viewModel.movies}"/>
 
     </FrameLayout>
 

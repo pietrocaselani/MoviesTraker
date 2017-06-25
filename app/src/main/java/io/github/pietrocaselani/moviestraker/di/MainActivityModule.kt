@@ -2,10 +2,9 @@ package io.github.pietrocaselani.moviestraker.di
 
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
-import io.github.pietrocaselani.moviestraker.MainActivity
-import io.github.pietrocaselani.moviestraker.moviedetails.MovieDetailsFragmentModule
-import io.github.pietrocaselani.moviestraker.moviedetails.MovieDetailsFragmentModule_ContributMovieDetailsFragment
-import io.github.pietrocaselani.moviestraker.upcoming.UpcomingFragmentModule
+import io.github.pietrocaselani.moviestraker.ui.MainActivity
+import io.github.pietrocaselani.moviestraker.ui.moviedetails.MovieDetailsFragmentModule
+import io.github.pietrocaselani.moviestraker.ui.upcoming.UpcomingFragmentModule
 
 /**
  * Created by pc on 24/06/17.

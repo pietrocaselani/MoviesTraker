@@ -1,4 +1,4 @@
-package io.github.pietrocaselani.moviestraker.upcoming
+package io.github.pietrocaselani.moviestraker.ui.upcoming
 
 /**
  * Created by pc on 24/06/17.

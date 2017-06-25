@@ -1,4 +1,4 @@
-package io.github.pietrocaselani.moviestraker.upcoming
+package io.github.pietrocaselani.moviestraker.ui.upcoming
 
 import dagger.Module
 import dagger.Provides

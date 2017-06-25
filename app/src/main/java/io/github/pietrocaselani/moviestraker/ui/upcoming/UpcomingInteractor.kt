@@ -1,4 +1,4 @@
-package io.github.pietrocaselani.moviestraker.upcoming
+package io.github.pietrocaselani.moviestraker.ui.upcoming
 
 import io.github.pietrocaselani.moviestraker.tmdb.entities.GenreListResponse
 import io.github.pietrocaselani.moviestraker.tmdb.entities.ImageConfigurationResponse

@@ -7,27 +7,27 @@
 
         <variable
             name="viewModel"
-            type="io.github.pietrocaselani.moviestraker.moviedetails.MovieDetailsViewModel"/>
+            type="io.github.pietrocaselani.moviestraker.ui.moviedetails.MovieDetailsViewModel"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".ui.MainActivity">
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
             android:scaleType="centerCrop"
-            app:moviePoster="@{viewModel}"
-            android:transitionName="headerTransition"/>
+            android:transitionName="headerTransition"
+            app:moviePoster="@{viewModel}"/>
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context=".MainActivity">
+            tools:context=".ui.MainActivity">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -75,9 +75,9 @@
                         android:layout_marginLeft="@dimen/text_margin"
                         android:layout_marginStart="@dimen/text_margin"
                         android:layout_marginTop="@dimen/text_margin"
-                        app:genres="@{viewModel.genres}"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@{viewModel.vibrantColor}"/>
+                        android:textColor="@{viewModel.vibrantColor}"
+                        app:genres="@{viewModel.genres}"/>
 
                     <TextView
                         android:layout_width="match_parent"

@@ -1,4 +1,4 @@
-package io.github.pietrocaselani.moviestraker.moviedetails
+package io.github.pietrocaselani.moviestraker.ui.moviedetails
 
 import dagger.Module
 import dagger.Provides

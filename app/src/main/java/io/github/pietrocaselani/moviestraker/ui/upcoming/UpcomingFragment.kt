@@ -1,4 +1,4 @@
-package io.github.pietrocaselani.moviestraker.upcoming
+package io.github.pietrocaselani.moviestraker.ui.upcoming
 
 import android.databinding.DataBindingUtil
 import android.databinding.Observable
@@ -8,7 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.github.pietrocaselani.moviestraker.NavigationController
+import io.github.pietrocaselani.moviestraker.ui.NavigationController
 import io.github.pietrocaselani.moviestraker.R
 import io.github.pietrocaselani.moviestraker.databinding.FragmentUpcomingBinding
 import io.github.pietrocaselani.moviestraker.di.Injectable

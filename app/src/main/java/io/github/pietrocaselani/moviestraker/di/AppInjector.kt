@@ -11,8 +11,8 @@ import dagger.android.support.AndroidSupportInjection
 import dagger.android.support.HasSupportFragmentInjector
 import io.github.pietrocaselani.moviestraker.ActivityLifecycleCallbacksAdapter
 import io.github.pietrocaselani.moviestraker.MoviesTrackerApplication
-import io.github.pietrocaselani.moviestraker.moviedetails.MovieDetailsModule
-import io.github.pietrocaselani.moviestraker.upcoming.UpcomingModule
+import io.github.pietrocaselani.moviestraker.ui.moviedetails.MovieDetailsModule
+import io.github.pietrocaselani.moviestraker.ui.upcoming.UpcomingModule
 
 /**
  * Created by pc on 24/06/17.

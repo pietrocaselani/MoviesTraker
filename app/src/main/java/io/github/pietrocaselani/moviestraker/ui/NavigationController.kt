@@ -1,10 +1,11 @@
-package io.github.pietrocaselani.moviestraker
+package io.github.pietrocaselani.moviestraker.ui
 
 import android.os.Bundle
 import android.support.v4.app.FragmentManager
+import io.github.pietrocaselani.moviestraker.R
 import io.github.pietrocaselani.moviestraker.entities.MovieEntity
-import io.github.pietrocaselani.moviestraker.moviedetails.MovieDetailsFragment
-import io.github.pietrocaselani.moviestraker.upcoming.UpcomingFragment
+import io.github.pietrocaselani.moviestraker.ui.moviedetails.MovieDetailsFragment
+import io.github.pietrocaselani.moviestraker.ui.upcoming.UpcomingFragment
 import javax.inject.Inject
 
 /**

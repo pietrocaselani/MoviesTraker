@@ -1,4 +1,4 @@
-package io.github.pietrocaselani.moviestraker.moviedetails
+package io.github.pietrocaselani.moviestraker.ui.moviedetails
 
 import android.databinding.BaseObservable
 import android.databinding.ObservableField

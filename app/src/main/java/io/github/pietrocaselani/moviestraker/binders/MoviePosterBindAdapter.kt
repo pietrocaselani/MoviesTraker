@@ -6,7 +6,7 @@ import com.bumptech.glide.Glide
 import com.github.florent37.glidepalette.GlidePalette
 import io.github.pietrocaselani.moviestraker.R
 import io.github.pietrocaselani.moviestraker.extensions.setCompatAlpha
-import io.github.pietrocaselani.moviestraker.moviedetails.MovieDetailsViewModel
+import io.github.pietrocaselani.moviestraker.ui.moviedetails.MovieDetailsViewModel
 
 /**
  * Created by pc on 24/06/17.

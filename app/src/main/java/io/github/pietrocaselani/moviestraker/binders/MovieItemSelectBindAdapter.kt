@@ -3,7 +3,7 @@ package io.github.pietrocaselani.moviestraker.binders
 import android.databinding.BindingAdapter
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import io.github.pietrocaselani.moviestraker.upcoming.UpcomingViewModel
+import io.github.pietrocaselani.moviestraker.ui.upcoming.UpcomingViewModel
 
 /**
  * Created by pc on 24/06/17.
