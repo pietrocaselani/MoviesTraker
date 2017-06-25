@@ -26,6 +26,7 @@
             android:id="@+id/recyclerview_movies"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scrollbars="vertical"
             app:movieSelected="@{viewModel}"
             app:movies="@{viewModel.movies}"
             app:booleanVisibility="@{viewModel.moviesVisibility}"/>

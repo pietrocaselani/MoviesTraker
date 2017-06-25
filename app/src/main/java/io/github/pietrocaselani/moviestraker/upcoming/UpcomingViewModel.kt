@@ -2,7 +2,6 @@ package io.github.pietrocaselani.moviestraker.upcoming
 
 import android.databinding.BaseObservable
 import android.databinding.ObservableField
-import android.graphics.Movie
 import io.github.pietrocaselani.moviestraker.entities.GenreEntity
 import io.github.pietrocaselani.moviestraker.entities.MovieEntity
 import io.github.pietrocaselani.moviestraker.tmdb.entities.GenreResponse
@@ -32,8 +31,10 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 	private var imageConfiguration: ImageConfigurationResponse? = null
 	private val movieEntities = mutableListOf<MovieEntity>()
 	private var genres = listOf<GenreResponse>()
-	private var currentPage = 1
+	private val loadedPages = mutableListOf<Int>()
+	private var currentPage = 0
 	private var totalPages = Int.MAX_VALUE
+	private var loading = false
 	//endregion
 
 	//region Lifecycle
@@ -47,7 +48,16 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 	//endregion
 
 	//region Public
+	fun isLoading(): Boolean {
+		return loading
+	}
+
+	fun hasLoadedAllPages(): Boolean {
+		return currentPage == totalPages
+	}
+
 	fun requestMoreMovies() {
+		loading = true
 		currentPage++
 		loadMovies()
 	}
@@ -102,18 +112,23 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 
 	//region Private
 	private fun startRequests() {
+		if (movieEntities.size == 0) {
+			showMessage("Loading movies...")
+		}
+
 		fetchGenres()
 	}
 
 	private fun loadMovies() {
-		showMessage("Loading movies...")
-
-		if (currentPage >= totalPages) {
+		if (currentPage >= totalPages || loadedPages.contains(currentPage)) {
 			return
 		}
 
+		loading = true
+
 		interactor.fetchUpcomingMovies(currentPage)
 				.doOnNext {
+					loadedPages.add(it.page)
 					totalPages = it.totalPages
 				}
 				.map {
@@ -125,10 +140,14 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 				.map {
 					mapToMovieListViewModel(it)
 				}
+				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe({
 					showMovies(it)
 				}, {
+					loading = false
 					showMessage(it.localizedMessage)
+				}, {
+					loading = false
 				})
 	}
 
@@ -236,7 +255,11 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 	}
 
 	private fun showMovies(moviesViewModel: List<MovieListViewModel>) {
-		movies.set(moviesViewModel.toMutableList())
+		val moviesList = movies.get()
+		moviesList.addAll(moviesViewModel)
+
+		movies.set(moviesList)
+		movies.notifyChange()
 
 		if (moviesVisibility.get() != true) {
 			messageVisibility.set(false)

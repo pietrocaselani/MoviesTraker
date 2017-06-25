@@ -13,7 +13,7 @@ import jp.wasabeef.recyclerview.animators.SlideInDownAnimator
 fun bindArticles(recyclerView: RecyclerView, movies: List<MovieListViewModel>) {
 	if (recyclerView.adapter is MoviesAdapter) {
 		val moviesAdapter = recyclerView.adapter as MoviesAdapter
-		moviesAdapter.addMovies(movies)
+		moviesAdapter.setMovies(movies)
 	} else {
 		val adapter = MoviesAdapter(movies)
 		adapter.setHasStableIds(true)

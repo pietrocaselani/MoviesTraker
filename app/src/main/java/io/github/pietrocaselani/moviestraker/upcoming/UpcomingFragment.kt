@@ -12,7 +12,6 @@ import io.github.pietrocaselani.moviestraker.NavigationController
 import io.github.pietrocaselani.moviestraker.R
 import io.github.pietrocaselani.moviestraker.databinding.FragmentUpcomingBinding
 import io.github.pietrocaselani.moviestraker.di.Injectable
-import io.reactivex.disposables.CompositeDisposable
 import javax.inject.Inject
 
 /**
@@ -29,8 +28,6 @@ class UpcomingFragment : Fragment(), Injectable {
 
 	private lateinit var binding: FragmentUpcomingBinding
 	private lateinit var endlessListener: EndlessRecyclerViewScrollListener
-
-	private val disposables = CompositeDisposable()
 
 	private val movieChangedCallback = object : Observable.OnPropertyChangedCallback() {
 		override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
@@ -51,7 +48,22 @@ class UpcomingFragment : Fragment(), Injectable {
 		val linearLayoutManager = LinearLayoutManager(binding.root.context)
 		binding.recyclerviewMovies.layoutManager = linearLayoutManager
 
-		endlessListener = EndlessRecyclerViewScrollListener(linearLayoutManager)
+		val callback = object : EndlessRecyclerViewScrollListener.Callback {
+			override fun isLoading(): Boolean {
+				return viewModel.isLoading()
+			}
+
+			override fun hasLoadedAllItems(): Boolean {
+				return viewModel.hasLoadedAllPages()
+			}
+
+			override fun onLoadMore() {
+				viewModel.requestMoreMovies()
+			}
+
+		}
+
+		endlessListener = EndlessRecyclerViewScrollListener(linearLayoutManager, callback)
 		binding.recyclerviewMovies.addOnScrollListener(endlessListener)
 
 		return binding.root
@@ -63,11 +75,6 @@ class UpcomingFragment : Fragment(), Injectable {
 		viewModel.onStart()
 
 		viewModel.selectedMovie.addOnPropertyChangedCallback(movieChangedCallback)
-
-		val disposable = endlessListener.asObservable().subscribe {
-			viewModel.requestMoreMovies()
-		}
-		disposables.add(disposable)
 	}
 
 	override fun onStop() {
@@ -76,7 +83,6 @@ class UpcomingFragment : Fragment(), Injectable {
 		viewModel.selectedMovie.removeOnPropertyChangedCallback(movieChangedCallback)
 
 		viewModel.onStop()
-		disposables.clear()
 	}
 
 	override fun onDestroy() {

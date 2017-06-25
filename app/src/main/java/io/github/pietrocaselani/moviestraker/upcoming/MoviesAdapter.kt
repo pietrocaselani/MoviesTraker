@@ -15,9 +15,10 @@ class MoviesAdapter(movies: List<MovieListViewModel>) : RecyclerView.Adapter<Mov
 	private val movies = movies.toMutableList()
 	private var currentSize = movies.size
 
-	fun addMovies(newMovies: List<MovieListViewModel>) {
+	fun setMovies(newMovies: List<MovieListViewModel>) {
 		val startPosition = if (currentSize == 0) 0 else currentSize - 1
 
+		movies.clear()
 		movies.addAll(newMovies)
 
 		notifyItemRangeInserted(startPosition, newMovies.size)
