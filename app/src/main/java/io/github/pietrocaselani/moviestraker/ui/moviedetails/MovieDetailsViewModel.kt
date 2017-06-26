@@ -18,10 +18,9 @@ class MovieDetailsViewModel : BaseObservable() {
 	val posterLink = ObservableField<String?>()
 	val genres = ObservableField<List<GenreEntity>>(emptyList())
 
-	val darkMutedColor = ObservableField<Int>(R.color.colorPrimaryDark)
-	val darkVibrantColor = ObservableField<Int>(R.color.colorPrimaryDark)
-	val vibrantColor = ObservableField<Int>(R.color.colorAccent)
-	val lightVibrantColor = ObservableField<Int>(android.R.color.white)
+	val titleColor = ObservableField<Int>(R.color.colorPrimaryDark)
+	val detailsColor = ObservableField<Int>(R.color.colorPrimaryDark)
+	val overviewColor = ObservableField<Int>(android.R.color.white)
 
 	fun onStart(movie: MovieEntity) {
 		if (movie.posterLink != null) {

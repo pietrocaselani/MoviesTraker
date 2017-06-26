@@ -51,7 +51,7 @@
                             android:paddingTop="@dimen/text_margin"
                             android:text="@{viewModel.title}"
                             android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:textColor="@{viewModel.darkMutedColor}"
+                            android:textColor="@{viewModel.titleColor}"
                             />
 
                         <TextView
@@ -60,7 +60,7 @@
                             android:paddingBottom="@dimen/text_margin"
                             android:text="@{viewModel.releaseDate}"
                             android:textAppearance="?android:attr/textAppearanceSmall"
-                            android:textColor="@{viewModel.darkVibrantColor}"/>
+                            android:textColor="@{viewModel.detailsColor}"/>
                     </LinearLayout>
                 </FrameLayout>
 
@@ -76,7 +76,7 @@
                         android:layout_marginStart="@dimen/text_margin"
                         android:layout_marginTop="@dimen/text_margin"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@{viewModel.vibrantColor}"
+                        android:textColor="@{viewModel.detailsColor}"
                         app:genres="@{viewModel.genres}"/>
 
                     <TextView
@@ -84,7 +84,7 @@
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/text_margin"
                         android:text="@{viewModel.overview}"
-                        android:textColor="@{viewModel.lightVibrantColor}"/>
+                        android:textColor="@{viewModel.overviewColor}"/>
                 </LinearLayout>
             </LinearLayout>
 

@@ -20,15 +20,13 @@ fun bindMoviePoster(imageView: ImageView, viewModel: MovieDetailsViewModel) {
 	val listener = GlidePalette.with(posterLink)
 			.intoCallBack { palette ->
 				if (palette != null) {
-					val darkMutedColor = palette.getDarkMutedColor(R.color.colorPrimaryDark)
-					val darkVibrantColor = palette.getDarkVibrantColor(R.color.colorPrimaryDark)
-					val vibrantColor = palette.getVibrantColor(R.color.colorAccent)
-					val lightVibrantColor = palette.getMutedColor(android.R.color.white)
+					val titleColor = palette.getDominantColor(R.color.colorPrimaryDark)
+					val detailsColor = palette.getMutedColor(R.color.colorPrimaryDark)
+					val overviewColor = palette.getLightVibrantColor(R.color.colorAccent)
 
-					viewModel.darkMutedColor.set(darkMutedColor)
-					viewModel.darkVibrantColor.set(darkVibrantColor)
-					viewModel.vibrantColor.set(vibrantColor)
-					viewModel.lightVibrantColor.set(lightVibrantColor)
+					viewModel.titleColor.set(titleColor)
+					viewModel.detailsColor.set(detailsColor)
+					viewModel.overviewColor.set(overviewColor)
 				}
 			}
 
