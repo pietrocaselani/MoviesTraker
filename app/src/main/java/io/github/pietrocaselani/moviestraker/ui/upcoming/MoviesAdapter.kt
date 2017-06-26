@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import io.github.pietrocaselani.moviestraker.R
 import io.github.pietrocaselani.moviestraker.databinding.MovieListItemBinding
+import io.github.pietrocaselani.moviestraker.ui.common.MovieListViewModel
 
 /**
  * Created by pc on 24/06/17.

@@ -1,4 +1,4 @@
-package io.github.pietrocaselani.moviestraker.ui.upcoming
+package io.github.pietrocaselani.moviestraker.ui.searchmovies
 
 import android.databinding.BaseObservable
 import android.databinding.ObservableField
@@ -13,9 +13,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 
 /**
- * Created by pc on 24/06/17.
+ * Created by pc on 25/06/17.
  */
-class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseObservable() {
+class SearchMoviesViewModel(private val interactor: SearchMoviesInteractorInput) : BaseObservable() {
 
 	//region Data Binding Properties
 	val movies = ObservableField<MutableList<MovieListViewModel>>(mutableListOf())
@@ -32,18 +32,32 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 	private val movieEntities = mutableListOf<MovieEntity>()
 	private var genres = listOf<GenreResponse>()
 	private val loadedPages = mutableListOf<Int>()
-	private var currentPage = 0
+	private var currentPage = 1
 	private var totalPages = Int.MAX_VALUE
 	private var loading = false
+	private var query = ""
 	//endregion
 
 	//region Lifecycle
 	fun onStart() {
-		startRequests()
+		if (movieEntities.size == 0) {
+			showMessage("Start typing a movie name")
+		}
+
+		fetchGenres()
 	}
 
 	fun onStop() {
 		disposables.clear()
+	}
+	//endregion
+
+	//region Data Binding Methods
+	fun search(query: String) {
+		this.query = query
+		this.currentPage = 1
+		loadedPages.clear()
+		loadMovies()
 	}
 	//endregion
 
@@ -76,22 +90,22 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 	//endregion
 
 	//region Private
-	private fun startRequests() {
-		if (movieEntities.size == 0) {
-			showMessage("Loading movies...")
+	private fun loadMovies() {
+		if (genres.isEmpty()) {
+			fetchGenres()
+			return
+		} else if (imageConfiguration == null) {
+			fetchConfigurations()
+			return
 		}
 
-		fetchGenres()
-	}
-
-	private fun loadMovies() {
 		if (currentPage >= totalPages || loadedPages.contains(currentPage)) {
 			return
 		}
 
 		loading = true
 
-		interactor.fetchUpcomingMovies(currentPage)
+		val disposable = interactor.searchMovies(query, currentPage)
 				.doOnNext {
 					loadedPages.add(it.page)
 					totalPages = it.totalPages
@@ -114,6 +128,8 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 				}, {
 					loading = false
 				})
+
+		disposables.add(disposable)
 	}
 
 	private fun fetchGenres() {
@@ -142,18 +158,9 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 						imageConfiguration = it
 					}, {
 						showMessage(it.localizedMessage)
-					}, {
-						refresh()
 					})
 			disposables.add(disposable)
-		} else {
-			refresh()
 		}
-	}
-
-	private fun refresh() {
-		currentPage = 1
-		loadMovies()
 	}
 	//endregion
 

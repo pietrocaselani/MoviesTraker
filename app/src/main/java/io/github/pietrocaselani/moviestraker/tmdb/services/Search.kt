@@ -7,11 +7,11 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 /**
- * Created by pc on 24/06/17.
+ * Created by pc on 25/06/17.
  */
-interface Movies {
+interface Search {
 
-	@GET("movie/upcoming")
-	fun upcoming(@Query("page") page: Int): Flowable<PagedResponse<MovieResponse>>
+	@GET("search/movie")
+	fun searchMovie(@Query("query") query: String, @Query("page") page: Int): Flowable<PagedResponse<MovieResponse>>
 
 }

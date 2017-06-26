@@ -1,30 +1,33 @@
-package io.github.pietrocaselani.moviestraker.ui.upcoming
+package io.github.pietrocaselani.moviestraker.ui.searchmovies
 
 import android.databinding.DataBindingUtil
 import android.databinding.Observable
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.view.MenuItemCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.SearchView
 import android.view.*
-import io.github.pietrocaselani.moviestraker.ui.NavigationController
 import io.github.pietrocaselani.moviestraker.R
-import io.github.pietrocaselani.moviestraker.databinding.FragmentUpcomingBinding
+import io.github.pietrocaselani.moviestraker.databinding.FragmentSearchMoviesBinding
 import io.github.pietrocaselani.moviestraker.di.Injectable
+import io.github.pietrocaselani.moviestraker.ui.NavigationController
+import io.github.pietrocaselani.moviestraker.ui.upcoming.EndlessRecyclerViewScrollListener
 import javax.inject.Inject
 
 /**
- * Created by pc on 24/06/17.
+ * Created by pc on 25/06/17.
  */
-class UpcomingFragment : Fragment(), Injectable {
+class SearchMoviesFragment : Fragment(), Injectable {
 
 	companion object {
-		const val TAG = "UpcomingFragment"
+		val TAG = "SearchMoviesFragment"
 	}
 
-	@Inject lateinit var viewModel: UpcomingViewModel
 	@Inject lateinit var navigationController: NavigationController
+	@Inject lateinit var viewModel: SearchMoviesViewModel
 
-	private lateinit var binding: FragmentUpcomingBinding
+	private lateinit var binding: FragmentSearchMoviesBinding
 	private lateinit var endlessListener: EndlessRecyclerViewScrollListener
 
 	private val movieChangedCallback = object : Observable.OnPropertyChangedCallback() {
@@ -40,9 +43,9 @@ class UpcomingFragment : Fragment(), Injectable {
 	}
 
 	override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-		binding = DataBindingUtil.inflate<FragmentUpcomingBinding>(
+		binding = DataBindingUtil.inflate<FragmentSearchMoviesBinding>(
 				inflater,
-				R.layout.fragment_upcoming,
+				R.layout.fragment_search_movies,
 				container,
 				false)
 
@@ -81,16 +84,22 @@ class UpcomingFragment : Fragment(), Injectable {
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-		inflater?.inflate(R.menu.upcoming_fragment, menu)
-	}
+		inflater?.inflate(R.menu.search_movies_fragment, menu)
 
-	override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-		if (item?.itemId == R.id.fragment_upcoming_menu_search) {
-			navigationController.navigateToSearchMovies()
+		val searchView = MenuItemCompat.getActionView(menu?.findItem(R.id.searchview)) as SearchView
 
-			return true
-		}
-		return super.onOptionsItemSelected(item)
+		searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+			override fun onQueryTextSubmit(query: String?): Boolean {
+				viewModel.search(query ?: "")
+				return true
+			}
+
+			override fun onQueryTextChange(newText: String?): Boolean {
+				return true
+			}
+		})
+
+		searchView.setIconifiedByDefault(false)
 	}
 
 	override fun onStop() {
@@ -105,4 +114,5 @@ class UpcomingFragment : Fragment(), Injectable {
 		binding.recyclerviewMovies.clearOnScrollListeners()
 		super.onDestroy()
 	}
+
 }

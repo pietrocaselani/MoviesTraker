@@ -2,6 +2,8 @@ package io.github.pietrocaselani.moviestraker.ui.upcoming
 
 import dagger.Module
 import dagger.Provides
+import io.github.pietrocaselani.moviestraker.interactors.ConfigurationInteractorInput
+import io.github.pietrocaselani.moviestraker.interactors.GenresInteractorInput
 import io.github.pietrocaselani.moviestraker.tmdb.TMDB
 import javax.inject.Singleton
 
@@ -13,8 +15,10 @@ class UpcomingModule {
 
 	@Provides
 	@Singleton
-	fun provideInteractor(tmdb: TMDB): UpcomingInteractorInput {
-		return UpcomingInteractor(tmdb.movies(), tmdb.genres(), tmdb.configuration())
+	fun provideInteractor(tmdb: TMDB,
+	                      genresInteractorInput: GenresInteractorInput,
+	                      configurationInteractorInput: ConfigurationInteractorInput): UpcomingInteractorInput {
+		return UpcomingInteractor(tmdb.movies(), genresInteractorInput, configurationInteractorInput)
 	}
 
 	@Provides

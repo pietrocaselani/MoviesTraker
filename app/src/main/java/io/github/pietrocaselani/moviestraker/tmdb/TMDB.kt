@@ -1,11 +1,11 @@
 package io.github.pietrocaselani.moviestraker.tmdb
 
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import io.github.pietrocaselani.moviestraker.tmdb.services.Configuration
 import io.github.pietrocaselani.moviestraker.tmdb.services.Genres
 import io.github.pietrocaselani.moviestraker.tmdb.services.Movies
+import io.github.pietrocaselani.moviestraker.tmdb.services.Search
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -54,6 +54,10 @@ open class TMDB(private val apiKey: String) {
 
 	fun configuration(): Configuration {
 		return retrofit.create(Configuration::class.java)
+	}
+
+	fun search(): Search {
+		return retrofit.create(Search::class.java)
 	}
 
 }

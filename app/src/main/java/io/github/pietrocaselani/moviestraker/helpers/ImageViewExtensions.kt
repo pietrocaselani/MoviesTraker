@@ -1,4 +1,4 @@
-package io.github.pietrocaselani.moviestraker.extensions
+package io.github.pietrocaselani.moviestraker.helpers
 
 import android.os.Build
 import android.widget.ImageView

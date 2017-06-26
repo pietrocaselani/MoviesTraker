@@ -2,7 +2,7 @@ package io.github.pietrocaselani.moviestraker.binders
 
 import android.databinding.BindingAdapter
 import android.support.v7.widget.RecyclerView
-import io.github.pietrocaselani.moviestraker.ui.upcoming.MovieListViewModel
+import io.github.pietrocaselani.moviestraker.ui.common.MovieListViewModel
 import io.github.pietrocaselani.moviestraker.ui.upcoming.MoviesAdapter
 import jp.wasabeef.recyclerview.animators.SlideInDownAnimator
 
