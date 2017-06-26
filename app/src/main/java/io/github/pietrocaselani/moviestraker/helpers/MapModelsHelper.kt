@@ -1,6 +1,5 @@
 package io.github.pietrocaselani.moviestraker.helpers
 
-import android.util.Log
 import io.github.pietrocaselani.moviestraker.entities.GenreEntity
 import io.github.pietrocaselani.moviestraker.entities.MovieEntity
 import io.github.pietrocaselani.moviestraker.tmdb.entities.GenreResponse
@@ -8,7 +7,6 @@ import io.github.pietrocaselani.moviestraker.tmdb.entities.ImageConfigurationRes
 import io.github.pietrocaselani.moviestraker.tmdb.entities.MovieResponse
 import io.github.pietrocaselani.moviestraker.ui.common.MovieListViewModel
 import okhttp3.HttpUrl
-import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -33,7 +31,7 @@ fun mapToMovieEntity(movies: List<MovieResponse>, genres: List<GenreResponse>,
 		val posterLink = basePath?.plus(movie.posterPath)
 		val backdropLink = basePath?.plus(movie.backdropPath)
 
-		val dateFormat = SimpleDateFormat("yyyy-MM-dd")
+		val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
 
 		val releaseDate: Date
 
@@ -56,7 +54,7 @@ fun mapToMovieEntity(movies: List<MovieResponse>, genres: List<GenreResponse>,
 }
 
 fun mapToMovieListViewModel(moviesEntity: List<MovieEntity>): List<MovieListViewModel> {
-	val dateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.SHORT)
+	val dateFormat = SimpleDateFormat.getDateInstance(SimpleDateFormat.MEDIUM)
 
 	return moviesEntity.map { movieEntity ->
 		val movieGenres = movieEntity.genres.map {
