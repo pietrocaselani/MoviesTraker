@@ -1,4 +1,4 @@
-package io.github.pietrocaselani.moviestraker.ui.upcoming
+package io.github.pietrocaselani.moviestraker.ui.common
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -6,29 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import io.github.pietrocaselani.moviestraker.R
 import io.github.pietrocaselani.moviestraker.databinding.MovieListItemBinding
-import io.github.pietrocaselani.moviestraker.ui.common.MovieListViewModel
 
 /**
  * Created by pc on 24/06/17.
  */
-class MoviesAdapter(movies: List<MovieListViewModel>) : RecyclerView.Adapter<MovieViewHolder>() {
+class MoviesAdapter(private var movies: List<MovieListViewModel>) : RecyclerView.Adapter<MovieViewHolder>() {
 
-	private val movies = movies.toMutableList()
 	private var currentSize = movies.size
 
 	fun setMovies(newMovies: List<MovieListViewModel>) {
-		val startPosition = if (currentSize == 0) 0 else currentSize - 1
+		movies = newMovies
 
-		movies.clear()
-		movies.addAll(newMovies)
-
-		notifyItemRangeInserted(startPosition, newMovies.size)
+		notifyDataSetChanged()
 
 		currentSize = movies.size
-	}
-
-	override fun getItemId(position: Int): Long {
-		return movies[position].name.hashCode().toLong()
 	}
 
 	override fun onBindViewHolder(holder: MovieViewHolder?, position: Int) {

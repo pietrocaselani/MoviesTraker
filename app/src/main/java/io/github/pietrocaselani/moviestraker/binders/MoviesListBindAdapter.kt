@@ -3,8 +3,7 @@ package io.github.pietrocaselani.moviestraker.binders
 import android.databinding.BindingAdapter
 import android.support.v7.widget.RecyclerView
 import io.github.pietrocaselani.moviestraker.ui.common.MovieListViewModel
-import io.github.pietrocaselani.moviestraker.ui.upcoming.MoviesAdapter
-import jp.wasabeef.recyclerview.animators.SlideInDownAnimator
+import io.github.pietrocaselani.moviestraker.ui.common.MoviesAdapter
 
 /**
  * Created by pc on 24/06/17.
@@ -16,8 +15,6 @@ fun bindArticles(recyclerView: RecyclerView, movies: List<MovieListViewModel>) {
 		moviesAdapter.setMovies(movies)
 	} else {
 		val adapter = MoviesAdapter(movies)
-		adapter.setHasStableIds(true)
-		recyclerView.itemAnimator = SlideInDownAnimator()
 		recyclerView.adapter = adapter
 	}
 

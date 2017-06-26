@@ -12,7 +12,7 @@ import io.github.pietrocaselani.moviestraker.R
 import io.github.pietrocaselani.moviestraker.databinding.FragmentSearchMoviesBinding
 import io.github.pietrocaselani.moviestraker.di.Injectable
 import io.github.pietrocaselani.moviestraker.ui.NavigationController
-import io.github.pietrocaselani.moviestraker.ui.upcoming.EndlessRecyclerViewScrollListener
+import io.github.pietrocaselani.moviestraker.ui.common.EndlessRecyclerViewScrollListener
 import javax.inject.Inject
 
 /**
@@ -55,14 +55,6 @@ class SearchMoviesFragment : Fragment(), Injectable {
 		binding.recyclerviewMovies.layoutManager = linearLayoutManager
 
 		val callback = object : EndlessRecyclerViewScrollListener.Callback {
-			override fun isLoading(): Boolean {
-				return viewModel.isLoading()
-			}
-
-			override fun hasLoadedAllItems(): Boolean {
-				return viewModel.hasLoadedAllPages()
-			}
-
 			override fun onLoadMore() {
 				viewModel.requestMoreMovies()
 			}

@@ -10,6 +10,7 @@ import io.github.pietrocaselani.moviestraker.ui.NavigationController
 import io.github.pietrocaselani.moviestraker.R
 import io.github.pietrocaselani.moviestraker.databinding.FragmentUpcomingBinding
 import io.github.pietrocaselani.moviestraker.di.Injectable
+import io.github.pietrocaselani.moviestraker.ui.common.EndlessRecyclerViewScrollListener
 import javax.inject.Inject
 
 /**
@@ -52,14 +53,6 @@ class UpcomingFragment : Fragment(), Injectable {
 		binding.recyclerviewMovies.layoutManager = linearLayoutManager
 
 		val callback = object : EndlessRecyclerViewScrollListener.Callback {
-			override fun isLoading(): Boolean {
-				return viewModel.isLoading()
-			}
-
-			override fun hasLoadedAllItems(): Boolean {
-				return viewModel.hasLoadedAllPages()
-			}
-
 			override fun onLoadMore() {
 				viewModel.requestMoreMovies()
 			}
