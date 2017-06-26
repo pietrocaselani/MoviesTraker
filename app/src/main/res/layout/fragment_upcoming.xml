@@ -23,14 +23,21 @@
             android:text="@{viewModel.message}"
             app:booleanVisibility="@{viewModel.messageVisibility}"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recyclerview_movies"
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swiperefresh_movies"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical"
-            app:booleanVisibility="@{viewModel.moviesVisibility}"
-            app:movieSelected="@{viewModel}"
-            app:movies="@{viewModel.movies}"/>
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerview_movies"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                app:booleanVisibility="@{viewModel.moviesVisibility}"
+                app:movieSelected="@{viewModel}"
+                app:movies="@{viewModel.movies}"/>
+
+        </android.support.v4.widget.SwipeRefreshLayout>
 
     </FrameLayout>
 

@@ -8,8 +8,10 @@ import com.bumptech.glide.Glide
  * Created by pc on 24/06/17.
  */
 @BindingAdapter("moviePosterLink")
-fun bindMoviePosterLink(imageView: ImageView, posterLink: String) {
-	Glide.with(imageView.context)
-			.load(posterLink)
-			.into(imageView)
+fun bindMoviePosterLink(imageView: ImageView, posterLink: String?) {
+	if (posterLink != null) {
+		Glide.with(imageView.context)
+				.load(posterLink)
+				.into(imageView)
+	}
 }

@@ -35,6 +35,14 @@ class UpcomingFragment : Fragment(), Injectable {
 		}
 	}
 
+	private val loadingChangedCallback = object : Observable.OnPropertyChangedCallback() {
+		override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+			if (!viewModel.loading.get()) {
+				binding.swiperefreshMovies.isRefreshing = false
+			}
+		}
+	}
+
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setHasOptionsMenu(true)
@@ -62,6 +70,10 @@ class UpcomingFragment : Fragment(), Injectable {
 		endlessListener = EndlessRecyclerViewScrollListener(linearLayoutManager, callback)
 		binding.recyclerviewMovies.addOnScrollListener(endlessListener)
 
+		binding.swiperefreshMovies.setOnRefreshListener {
+			viewModel.refresh()
+		}
+
 		return binding.root
 	}
 
@@ -71,6 +83,7 @@ class UpcomingFragment : Fragment(), Injectable {
 		viewModel.onStart()
 
 		viewModel.selectedMovie.addOnPropertyChangedCallback(movieChangedCallback)
+		viewModel.loading.addOnPropertyChangedCallback(loadingChangedCallback)
 	}
 
 	override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -90,6 +103,7 @@ class UpcomingFragment : Fragment(), Injectable {
 		super.onStop()
 
 		viewModel.selectedMovie.removeOnPropertyChangedCallback(movieChangedCallback)
+		viewModel.loading.removeOnPropertyChangedCallback(loadingChangedCallback)
 
 		viewModel.onStop()
 	}

@@ -45,7 +45,7 @@ class MovieViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
 	fun bind(movieViewModel: MovieListViewModel) = with(itemView) {
 		binding.viewModel = movieViewModel
-		binding.executePendingBindings()
+//		binding.executePendingBindings()
 	}
 
 }

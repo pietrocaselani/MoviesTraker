@@ -1,6 +1,7 @@
 package io.github.pietrocaselani.moviestraker.ui.upcoming
 
 import android.databinding.BaseObservable
+import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
 import io.github.pietrocaselani.moviestraker.entities.MovieEntity
 import io.github.pietrocaselani.moviestraker.helpers.mapMovieToDetails
@@ -23,6 +24,7 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 	val moviesVisibility = ObservableField<Boolean>(true)
 	val messageVisibility = ObservableField<Boolean>(true)
 	val selectedMovie = ObservableField<MovieEntity>()
+	val loading = ObservableBoolean(false)
 	//endregion
 
 	//region Properties
@@ -34,7 +36,6 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 	private val loadedPages = mutableListOf<Int>()
 	private var currentPage = 0
 	private var totalPages = Int.MAX_VALUE
-	private var loading = false
 	//endregion
 
 	//region Lifecycle
@@ -48,16 +49,20 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 	//endregion
 
 	//region Public
-	fun isLoading(): Boolean {
-		return loading
-	}
+	fun refresh() {
+		currentPage = 1
+		loadedPages.clear()
 
-	fun hasLoadedAllPages(): Boolean {
-		return currentPage == totalPages
+		if (genres.isEmpty()) {
+			fetchGenres()
+		} else if (imageConfiguration == null) {
+			fetchConfigurations()
+		} else {
+			loadMovies(refresh = true)
+		}
 	}
 
 	fun requestMoreMovies() {
-		loading = true
 		currentPage++
 		loadMovies()
 	}
@@ -84,12 +89,12 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 		fetchGenres()
 	}
 
-	private fun loadMovies() {
+	private fun loadMovies(refresh: Boolean = false) {
 		if (currentPage >= totalPages || loadedPages.contains(currentPage)) {
 			return
 		}
 
-		loading = true
+		loading.set(true)
 
 		interactor.fetchUpcomingMovies(currentPage)
 				.doOnNext {
@@ -100,6 +105,10 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 					mapToMovieEntity(it.results, genres, imageConfiguration)
 				}
 				.doOnNext {
+					if (refresh) {
+						movieEntities.clear()
+					}
+
 					movieEntities.addAll(it)
 				}
 				.map {
@@ -107,12 +116,16 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 				}
 				.observeOn(AndroidSchedulers.mainThread())
 				.subscribe({
+					loading.set(false)
+					if (refresh) {
+						movies.set(mutableListOf())
+					}
 					showMovies(it)
 				}, {
-					loading = false
-					showMessage(it.localizedMessage)
-				}, {
-					loading = false
+					loading.set(false)
+					if (movieEntities.isEmpty()) {
+						showMessage(it.localizedMessage)
+					}
 				})
 	}
 
@@ -150,11 +163,6 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 			refresh()
 		}
 	}
-
-	private fun refresh() {
-		currentPage = 1
-		loadMovies()
-	}
 	//endregion
 
 	//region View
@@ -171,10 +179,8 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 		movies.set(moviesList)
 		movies.notifyChange()
 
-		if (moviesVisibility.get() != true) {
-			messageVisibility.set(false)
-			moviesVisibility.set(true)
-		}
+		messageVisibility.set(false)
+		moviesVisibility.set(true)
 	}
 	//endregion
 
