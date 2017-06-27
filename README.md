@@ -15,6 +15,10 @@ TMDB_API_KEY_RELEASE=your_api_key_for_release
 
 on `$HOME/.gradle/gradle.properties`
 
+## Translations
+
+You can help translate the app [here](https://localise.biz/pietro-caselani/moviestracker)
+
 ## Author
 
 Pietro Caselani, pc1992@gmail.com
