@@ -33,7 +33,7 @@ class MovieDetailsViewModel : BaseObservable() {
 		overview.set(movie.overview)
 
 		val date = SimpleDateFormat
-				.getDateInstance(SimpleDateFormat.SHORT)
+				.getDateInstance(SimpleDateFormat.MEDIUM)
 				.format(movie.releaseDate)
 
 		releaseDate.set(date)

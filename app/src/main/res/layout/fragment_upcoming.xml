@@ -20,7 +20,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center_horizontal"
-            android:text="@{viewModel.message}"
+            app:message="@{viewModel.message}"
+            app:resourceMessage="@{viewModel.resourceMessage}"
             app:booleanVisibility="@{viewModel.messageVisibility}"/>
 
         <android.support.v4.widget.SwipeRefreshLayout

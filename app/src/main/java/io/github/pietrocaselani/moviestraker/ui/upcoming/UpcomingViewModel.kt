@@ -3,6 +3,8 @@ package io.github.pietrocaselani.moviestraker.ui.upcoming
 import android.databinding.BaseObservable
 import android.databinding.ObservableBoolean
 import android.databinding.ObservableField
+import android.databinding.ObservableInt
+import io.github.pietrocaselani.moviestraker.R
 import io.github.pietrocaselani.moviestraker.entities.MovieEntity
 import io.github.pietrocaselani.moviestraker.helpers.mapMovieToDetails
 import io.github.pietrocaselani.moviestraker.helpers.mapToMovieEntity
@@ -21,6 +23,7 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 	//region Data Binding Properties
 	val movies = ObservableField<MutableList<MovieListViewModel>>(mutableListOf())
 	val message = ObservableField<String>("")
+	val resourceMessage = ObservableInt(0)
 	val moviesVisibility = ObservableField<Boolean>(true)
 	val messageVisibility = ObservableField<Boolean>(true)
 	val selectedMovie = ObservableField<MovieEntity>()
@@ -83,7 +86,7 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 	//region Private
 	private fun startRequests() {
 		if (movieEntities.size == 0) {
-			showMessage("Loading movies...")
+			showMessage(R.string.loading_movies)
 		}
 
 		fetchGenres()
@@ -168,6 +171,15 @@ class UpcomingViewModel(private val interactor: UpcomingInteractorInput) : BaseO
 	//region View
 	private fun showMessage(text: String) {
 		message.set(text)
+		showMessage()
+	}
+
+	private fun showMessage(stringResourceId: Int) {
+		resourceMessage.set(stringResourceId)
+		showMessage()
+	}
+
+	private fun showMessage() {
 		moviesVisibility.set(false)
 		messageVisibility.set(true)
 	}

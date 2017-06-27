@@ -5,7 +5,7 @@
     <item
         android:id="@+id/fragment_upcoming_menu_search"
         android:icon="@android:drawable/ic_menu_search"
-        android:title="Search"
+        android:title="@string/search"
         app:showAsAction="ifRoom" />
 
 </menu>

@@ -83,6 +83,7 @@ class SearchMoviesFragment : Fragment(), Injectable {
 		searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 			override fun onQueryTextSubmit(query: String?): Boolean {
 				viewModel.search(query ?: "")
+				searchView.clearFocus()
 				return true
 			}
 
