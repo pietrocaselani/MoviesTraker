@@ -64,11 +64,11 @@ class UpcomingFragment : Fragment(), Injectable {
 			override fun onLoadMore() {
 				viewModel.requestMoreMovies()
 			}
-
 		}
 
 		endlessListener = EndlessRecyclerViewScrollListener(linearLayoutManager, callback)
 		binding.recyclerviewMovies.addOnScrollListener(endlessListener)
+		endlessListener.loading = false
 
 		binding.swiperefreshMovies.setOnRefreshListener {
 			viewModel.refresh()
@@ -77,8 +77,8 @@ class UpcomingFragment : Fragment(), Injectable {
 		return binding.root
 	}
 
-	override fun onActivityCreated(savedInstanceState: Bundle?) {
-		super.onActivityCreated(savedInstanceState)
+	override fun onStart() {
+		super.onStart()
 
 		viewModel.onStart()
 
