@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="io.github.pietrocaselani.moviestraker.ui.MainActivity">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="io.github.pietrocaselani.moviestraker.ui.searchmovies.SearchMoviesViewModel"/>
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            app:message="@{viewModel.message}"
+            app:resourceMessage="@{viewModel.resourceMessage}"
+            app:booleanVisibility="@{viewModel.messageVisibility}"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerview_movies"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            app:booleanVisibility="@{viewModel.moviesVisibility}"
+            app:searchMovieSelected="@{viewModel}"
+            app:movies="@{viewModel.movies}"/>
+
+    </FrameLayout>
+
+</layout>

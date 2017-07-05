@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="io.github.pietrocaselani.moviestraker.ui.moviedetails.MovieDetailsViewModel"/>
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.MainActivity">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:scaleType="centerCrop"
+            android:transitionName="headerTransition"
+            app:moviePoster="@{viewModel}"/>
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context=".ui.MainActivity">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingLeft="@dimen/text_margin"
+                        android:paddingStart="@dimen/text_margin">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/text_margin"
+                            android:text="@{viewModel.title}"
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="@{viewModel.titleColor}"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="@dimen/text_margin"
+                            android:text="@string/release_date"
+                            android:textAppearance="?android:attr/textAppearanceSmall"
+                            android:textColor="@{viewModel.detailsColor}"/>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingBottom="@dimen/default_margin"
+                            android:text="@{viewModel.releaseDate}"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:textColor="@{viewModel.detailsColor}"/>
+                    </LinearLayout>
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/text_margin"
+                        android:layout_marginStart="@dimen/text_margin"
+                        android:layout_marginTop="@dimen/text_margin"
+                        android:text="@string/genres"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:textColor="@{viewModel.detailsColor}"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/text_margin"
+                        android:layout_marginStart="@dimen/text_margin"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@{viewModel.detailsColor}"
+                        app:genres="@{viewModel.genres}"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/text_margin"
+                        android:text="@{viewModel.overview}"
+                        android:textColor="@{viewModel.overviewColor}"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </android.support.v4.widget.NestedScrollView>
+
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>

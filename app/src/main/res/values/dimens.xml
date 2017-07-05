@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="min_margin">4dp</dimen>
+    <dimen name="default_margin">8dp</dimen>
+    <dimen name="max_margin">16dp</dimen>
+
+    <dimen name="activity_horizontal_margin">@dimen/max_margin</dimen>
+    <dimen name="activity_vertical_margin">@dimen/max_margin</dimen>
+    <dimen name="app_bar_height">180dp</dimen>
+    <dimen name="fab_margin">@dimen/max_margin</dimen>
+    <dimen name="text_margin">@dimen/max_margin</dimen>
+
+</resources>

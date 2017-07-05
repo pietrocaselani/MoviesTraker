@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Loco xml export: Android string resources
+ Project: MoviesTracker
+ Release: Working copy
+ Locale: pt-BR, Brazilian Portuguese
+ Exported by: Pietro Caselani
+ Exported at: Mon, 26 Jun 2017 21:06:37 -0300
+-->
+<resources>
+    <string name="app_name">MoviesTraker</string>
+    <string name="search_movies">Pesquisar filmes</string>
+    <string name="search">Pesquisar</string>
+    <string name="release_date">Lançamento</string>
+    <string name="genres">Gêneros</string>
+    <string name="type_movie_name">Digite o nome de um filme</string>
+    <string name="loading_movies">Buscando filmes</string>
+</resources>
